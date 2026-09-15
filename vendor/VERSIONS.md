@@ -65,3 +65,21 @@ Humble Docker vs rolling / master 快照的**语义**（不要把 rolling 文件
 ## 许可
 
 各 vendor 树保留上游 LICENSE（多为 Apache-2.0 / EPL）。本仓根 LICENSE 为 MIT，不覆盖这些拷贝。
+
+## 本地修改记录（2026-09-16，iter10 评估驱动循环）
+
+上游 SHA 见上表；下列文件是在拷贝之上做的**本地 patch**，与上游有 diff。
+每个 patch 一个 commit，conventional commits 风格，详见
+[docs/architecture/eval-driven-loop.md](../docs/architecture/eval-driven-loop.md)。
+
+| 文件 | commit | 一句话 |
+|------|--------|--------|
+| `rmw_fastrtps/rmw_fastrtps_shared_cpp/src/rmw_wait.cpp` | `57896f1d` | `__rmw_wait` 标记阶段先查 StatusCondition trigger_value（无锁 bool），未触发则跳过 `get_first_untaken_info()`；`subscription_has_data` 显式判空短路 |
+| `rmw_fastrtps/rmw_fastrtps_shared_cpp/src/rmw_publish.cpp` | `79c20cb1` | 3 处 `Time_t::now()` 收口到 `fill_source_timestamp()`；新增 `RMW_FASTRTPS_SOURCE_TS=zero` 运行期开关（默认 off） |
+| `rmw_fastrtps/rmw_fastrtps_shared_cpp/include/rmw_fastrtps_shared_cpp/custom_subscriber_info.hpp` | `6c5b4829` | 删除整段注释掉的 `on_type_discovery()` 死代码（原 192-206 行） |
+
+未改动 `vendor/Fast-DDS/` 源码（仅只读分析 `DataWriterImpl.cpp` 的
+payload pool / `fixed_payload_size_` 机制）。本机 macOS 无 ROS 2 运行时，
+上述 patch **未经真编译验证**，仅过 12 个 `check_*.py` 静态闸门 +
+`api.signature_diff` 签名对比；端到端收益 STATUS: blocked-on-runtime。
+

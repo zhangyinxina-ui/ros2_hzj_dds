@@ -25,7 +25,8 @@ python3 config/env/load.py print-b
 
 ## Hold — do not
 
-- Do not edit `config/fastdds.xml` or `docs/artifacts/bench/SCOREBOARD.md`.
+- ~~Do not edit `config/fastdds.xml`~~ — **覆盖（2026-09-16，见 [docs/architecture/eval-driven-loop.md](docs/architecture/eval-driven-loop.md)）**：用户授权进入评估驱动重构期；iter10 仅做注释自固化 + 显式默认值 `port_queue_capacity=512`，未改生效数值。后续改 XML 仍须一次一参、跑 check 闸门。
+- Do not edit `docs/artifacts/bench/SCOREBOARD.md`（指针文件，数字不手改）。
 - Do not enable Agnocast / zenoh (no vendor trees, kmod, or `rmw_zenoh`).
 - 《3》–《6》 (bench score loops, Mac HIL, Promptfoo, CVE) stay out of scope.
 - Do not change `dimos_bridge` DDS behavior or vendor sources.
@@ -45,3 +46,4 @@ python3 config/env/load.py print-b
 - [docs/architecture/feishu-dual-chain-baseline.md](docs/architecture/feishu-dual-chain-baseline.md) — wiki3 §13(3) FastDDS + Cyclone baseline pointer (no XML rewrite; SCOREBOARD pointer only; same-topology XML tuning is paused)
 - [docs/architecture/feishu-dod-evidence.md](docs/architecture/feishu-dod-evidence.md) — wiki3 §6.3 product DoD honesty (`DoD: unmet` / `STATUS: blocked`; `prove_rmw.py` is env/string, not modified `.so`)
 - [docs/architecture/feishu-cega-bridge-hold.md](docs/architecture/feishu-cega-bridge-hold.md) — wiki3 §13(4) Cega / Bridge deferred Hold (no Cega; no `dimos_bridge` runtime edits)
+- [docs/architecture/eval-driven-loop.md](docs/architecture/eval-driven-loop.md) — 2026-09-16 评估驱动 DDS 改进循环：评分口径、iter10 改动（rmw_wait 预检 / rmw_publish 时间戳收口 / 死代码清理）、blocked-on-runtime 清单
