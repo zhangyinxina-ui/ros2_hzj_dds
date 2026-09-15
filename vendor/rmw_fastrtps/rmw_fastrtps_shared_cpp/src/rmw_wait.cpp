@@ -41,12 +41,45 @@ static bool data_reader_has_data(
          data_reader->get_first_untaken_info(&sample_info);
 }
 
+/// Cheap pre-check on a DataReader's StatusCondition.
+/**
+ * `get_statuscondition().get_trigger_value()` is a plain boolean read with no
+ * sample lock, whereas `get_first_untaken_info()` takes the reader's sample
+ * lock and copies a SampleInfo.  Per the DDS contract, when a reader's
+ * StatusCondition is NOT triggered, no status in its mask (data_available
+ * included) is active, so the reader provably has no untaken sample and the
+ * expensive SampleInfo read can be skipped.  When it IS triggered we still
+ * need `get_first_untaken_info()` because the trigger may come from a non-data
+ * status (deadline missed / liveliness changed / incompatible QoS).
+ */
+static bool reader_status_active(
+  eprosima::fastdds::dds::DataReader * data_reader)
+{
+  return data_reader &&
+         data_reader->get_statuscondition().get_trigger_value();
+}
+
 static bool subscription_has_data(
   const CustomSubscriberInfo * custom_subscriber_info)
 {
-  return data_reader_has_data(custom_subscriber_info->data_reader_) ||
-         data_reader_has_data(custom_subscriber_info->cpu_data_reader_) ||
-         data_reader_has_data(custom_subscriber_info->accel_data_reader_);
+  if (data_reader_has_data(custom_subscriber_info->data_reader_)) {
+    return true;
+  }
+  // The cpu/accel readers only exist on buffer-aware subscriptions.  Their
+  // null check already lives inside data_reader_has_data, but an explicit
+  // short-circuit avoids the call frame for the common (non-buffer-aware)
+  // case where both are nullptr.
+  if (custom_subscriber_info->cpu_data_reader_ &&
+    data_reader_has_data(custom_subscriber_info->cpu_data_reader_))
+  {
+    return true;
+  }
+  if (custom_subscriber_info->accel_data_reader_ &&
+    data_reader_has_data(custom_subscriber_info->accel_data_reader_))
+  {
+    return true;
+  }
+  return false;
 }
 
 /// Check if any condition in the set of entities has a triggered condition.
@@ -255,6 +288,21 @@ __rmw_wait(
     for (size_t i = 0; i < subscriptions->subscriber_count; ++i) {
       void * data = subscriptions->subscribers[i];
       auto custom_subscriber_info = static_cast<CustomSubscriberInfo *>(data);
+
+      // Cheap pre-check before the expensive get_first_untaken_info(): if none
+      // of the reader StatusConditions is triggered, the subscription provably
+      // has no untaken sample and can be cleared without taking the reader's
+      // sample lock.  This is the common path when the wait was woken by a
+      // timer / guard condition, or timed out, rather than by new data.
+      bool maybe_data =
+        reader_status_active(custom_subscriber_info->data_reader_) ||
+        reader_status_active(custom_subscriber_info->cpu_data_reader_) ||
+        reader_status_active(custom_subscriber_info->accel_data_reader_);
+
+      if (!maybe_data) {
+        subscriptions->subscribers[i] = 0;
+        continue;
+      }
 
       if (!subscription_has_data(custom_subscriber_info)) {
         subscriptions->subscribers[i] = 0;
