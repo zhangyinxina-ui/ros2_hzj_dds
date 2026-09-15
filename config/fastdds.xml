@@ -92,6 +92,19 @@
   (do not retry). Not healthy_check (kept) / port_queue
   (discarded) / sockets / send_buffers / mid-size SHM size.
   Exclusive / oversized SHM stays discarded.
+
+  iter10 (code-layer only, no new XML knob): this cut does not add any
+  effective XML parameter. iter1-iter9 already covered socket buffers,
+  send_buffers slab, SHM size, healthy_check, leaseAnnouncement and WLP;
+  the remaining knobs (publication_mode, thread settings, per-topic
+  data_reader profiles) are either inert on Humble 2.6 (profiles not bound
+  to a topic are not applied by rmw_fastrtps) or unsafe to probe without a
+  real same-host bench. The win is taken in vendor C++ instead:
+    - rmw_wait: StatusCondition pre-check before get_first_untaken_info
+    - rmw_publish: Time_t::now() funneled through one helper
+  See docs/architecture/eval-driven-loop.md. The only XML change below is
+  a documentation-only explicit value (port_queue_capacity at its Humble 2.6
+  default of 512) so the iter6 regression stays visible in this file.
 -->
 <profiles xmlns="http://www.eprosima.com">
     <transport_descriptors>
@@ -101,6 +114,8 @@
             <maxMessageSize>280000</maxMessageSize>
             <segment_size>2097152</segment_size>
             <healthy_check_timeout_ms>10000</healthy_check_timeout_ms>
+            <!-- Explicit Humble 2.6 default; iter6 probed 64 and regressed. -->
+            <port_queue_capacity>512</port_queue_capacity>
         </transport_descriptor>
     </transport_descriptors>
 
