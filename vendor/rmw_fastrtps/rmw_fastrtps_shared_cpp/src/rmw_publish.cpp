@@ -17,6 +17,9 @@
 
 #include "fastdds/rtps/common/Time_t.hpp"
 
+#include <cstdlib>
+#include <string>
+
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/rmw.h"
@@ -30,6 +33,41 @@
 
 namespace rmw_fastrtps_shared_cpp
 {
+namespace
+{
+/// Source-timestamp policy for the publish hot path.
+/**
+ * Default is strict: every publish calls `Time_t::now()` (a clock_gettime) so
+ * the RTPS source timestamp is real and receivers can compute one-way latency
+ * from `rmw_message_info_t::source_timestamp`.  Setting the environment
+ * variable `RMW_FASTRTPS_SOURCE_TS=zero` makes the hot path skip that system
+ * call and write a zero timestamp; this is ONLY for pure BestEffort high-rate
+ * telemetry (e.g. 200 Hz IMU) where receiver-side latency is never measured.
+ * Off by default, so the default behavior is byte-for-byte unchanged.
+ *
+ * This is the minimal landing of refactor-plan R1 ("injectable publish
+ * timestamp"): the three previously scattered `Time_t::now()` calls now route
+ * through one helper.
+ */
+inline bool source_ts_zero_mode()
+{
+  // magic-static: thread-safe one-time read of the env var (C++11)
+  static const char * env_value = std::getenv("RMW_FASTRTPS_SOURCE_TS");
+  static const bool zero_mode =
+    (nullptr != env_value) && (0 == std::string("zero").compare(env_value));
+  return zero_mode;
+}
+
+inline void fill_source_timestamp(eprosima::fastdds::dds::Time_t & stamp)
+{
+  if (source_ts_zero_mode()) {
+    stamp = eprosima::fastdds::dds::Time_t(0, 0);
+  } else {
+    eprosima::fastdds::dds::Time_t::now(stamp);
+  }
+}
+}  // namespace
+
 rmw_ret_t
 __rmw_publish(
   const char * identifier,
@@ -60,7 +98,7 @@ __rmw_publish(
   data.data = const_cast<void *>(ros_message);
   data.impl = info->type_support_impl_;
   eprosima::fastdds::dds::Time_t stamp;
-  eprosima::fastdds::dds::Time_t::now(stamp);
+  fill_source_timestamp(stamp);
   TRACETOOLS_TRACEPOINT(rmw_publish, publisher, ros_message, stamp.to_ns());
   if (eprosima::fastdds::dds::RETCODE_OK != info->data_writer_->write_w_timestamp(&data,
       eprosima::fastdds::dds::HANDLE_NIL, stamp))
@@ -112,7 +150,7 @@ __rmw_publish_serialized_message(
   data.data = &ser;
   data.impl = nullptr;  // not used when type is FASTDDS_SERIALIZED_DATA_TYPE_CDR_BUFFER
   eprosima::fastdds::dds::Time_t stamp;
-  eprosima::fastdds::dds::Time_t::now(stamp);
+  fill_source_timestamp(stamp);
   TRACETOOLS_TRACEPOINT(rmw_publish, publisher, serialized_message, stamp.to_ns());
   if (eprosima::fastdds::dds::RETCODE_OK != info->data_writer_->write_w_timestamp(&data,
       eprosima::fastdds::dds::HANDLE_NIL, stamp))
@@ -148,7 +186,7 @@ __rmw_publish_loaned_message(
 
   auto info = static_cast<CustomPublisherInfo *>(publisher->data);
   eprosima::fastdds::dds::Time_t stamp;
-  eprosima::fastdds::dds::Time_t::now(stamp);
+  fill_source_timestamp(stamp);
   TRACETOOLS_TRACEPOINT(rmw_publish, publisher, ros_message, stamp.to_ns());
   if (eprosima::fastdds::dds::RETCODE_OK != info->data_writer_->write_w_timestamp(
       const_cast<void *>(ros_message),
