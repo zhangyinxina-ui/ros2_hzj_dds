@@ -17,6 +17,7 @@ import asyncio
 from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
+import threading
 from typing import Any, Generic, Protocol, TypeVar, runtime_checkable
 
 MsgT = TypeVar("MsgT")
@@ -56,13 +57,20 @@ class PubSubBaseMixin(Generic[TopicT, MsgT]):
         unsubscribe_fn = self.subscribe(topic, cb)
         return self._Subscription(self, topic, cb, unsubscribe_fn)
 
-    async def aiter(self, topic: TopicT, *, max_pending: int | None = None) -> AsyncIterator[MsgT]:
+    def _subscribed_queue(
+        self, topic: TopicT, *, max_pending: int | None = None
+    ) -> tuple[asyncio.Queue[MsgT], Callable[[], None]]:
+        """Subscribe to a topic feeding an asyncio queue; return (queue, unsubscribe)."""
         q: asyncio.Queue[MsgT] = asyncio.Queue(maxsize=max_pending or 0)
 
         def _cb(msg: MsgT, topic: TopicT) -> None:
             q.put_nowait(msg)
 
         unsubscribe_fn = self.subscribe(topic, _cb)
+        return q, unsubscribe_fn
+
+    async def aiter(self, topic: TopicT, *, max_pending: int | None = None) -> AsyncIterator[MsgT]:
+        q, unsubscribe_fn = self._subscribed_queue(topic, max_pending=max_pending)
         try:
             while True:
                 yield await q.get()
@@ -73,12 +81,7 @@ class PubSubBaseMixin(Generic[TopicT, MsgT]):
     async def queue(
         self, topic: TopicT, *, max_pending: int | None = None
     ) -> AsyncIterator[asyncio.Queue[MsgT]]:
-        q: asyncio.Queue[MsgT] = asyncio.Queue(maxsize=max_pending or 0)
-
-        def _queue_cb(msg: MsgT, topic: TopicT) -> None:
-            q.put_nowait(msg)
-
-        unsubscribe_fn = self.subscribe(topic, _queue_cb)
+        q, unsubscribe_fn = self._subscribed_queue(topic, max_pending=max_pending)
         try:
             yield q
         finally:
@@ -129,8 +132,6 @@ class AllPubSub(PubSub[TopicT, MsgT], ABC):
 
     def subscribe_new_topics(self, callback: Callable[[TopicT], Any]) -> Callable[[], None]:
         """Discover new topics by tracking seen topics from subscribe_all."""
-        import threading
-
         seen: set[TopicT] = set()
         lock = threading.Lock()
 
@@ -157,8 +158,6 @@ class DiscoveryPubSub(PubSub[TopicT, MsgT], ABC):
 
     def subscribe_all(self, callback: Callable[[MsgT, TopicT], Any]) -> Callable[[], None]:
         """Subscribe to all topics by subscribing to each discovered topic."""
-        import threading
-
         subscriptions: list[Callable[[], None]] = []
         lock = threading.Lock()
 

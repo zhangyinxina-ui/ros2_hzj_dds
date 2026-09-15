@@ -16,6 +16,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import threading
 from typing import Any, Protocol, runtime_checkable
+import uuid
 
 try:
     import rclpy
@@ -34,8 +35,6 @@ except ImportError:
     rclpy = None  # type: ignore[assignment]
     SingleThreadedExecutor = None  # type: ignore[assignment, misc]
     Node = None  # type: ignore[assignment, misc]
-
-import uuid
 
 from dimos.constants import DEFAULT_THREAD_JOIN_TIMEOUT
 from dimos.msgs.protocol import DimosMsg

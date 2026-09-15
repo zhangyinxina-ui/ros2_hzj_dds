@@ -19,7 +19,7 @@ import json
 import os
 import threading
 import time
-from typing import Any
+from typing import Any, Callable, TypeVar
 
 from reactivex.disposable import Disposable
 from unitree_sdk2py.comm.motion_switcher.motion_switcher_client import (  # type: ignore[import-not-found]
@@ -74,18 +74,29 @@ _LOCO_API_IDS = {
 }
 
 
-def _env_int(name: str, default: int, *, min_v: int, max_v: int) -> int:
+_EnvScalarT = TypeVar("_EnvScalarT", int, float)
+
+
+def _env_scalar(
+    name: str,
+    default: _EnvScalarT,
+    *,
+    min_v: _EnvScalarT,
+    max_v: _EnvScalarT,
+    cast: Callable[[str], _EnvScalarT],
+) -> _EnvScalarT:
     raw = os.environ.get(name, "").strip()
     if not raw:
         return default
-    return max(min_v, min(max_v, int(raw)))
+    return max(min_v, min(max_v, cast(raw)))
+
+
+def _env_int(name: str, default: int, *, min_v: int, max_v: int) -> int:
+    return _env_scalar(name, default, min_v=min_v, max_v=max_v, cast=int)
 
 
 def _env_float(name: str, default: float, *, min_v: float, max_v: float) -> float:
-    raw = os.environ.get(name, "").strip()
-    if not raw:
-        return default
-    return max(min_v, min(max_v, float(raw)))
+    return _env_scalar(name, default, min_v=min_v, max_v=max_v, cast=float)
 
 
 class FsmState(IntEnum):
@@ -202,11 +213,15 @@ class G1HighLevelDdsSdk(Module, HighLevelG1Spec):
             self.register_disposable(Disposable(self.cmd_vel.subscribe(self.move)))
         logger.info("G1 DDS SDK connection started")
 
-    @rpc
-    def stop(self) -> None:
+    def _cancel_stop_timer(self) -> None:
+        """Cancel and clear any pending auto-stop timer."""
         if self._stop_timer:
             self._stop_timer.cancel()
             self._stop_timer = None
+
+    @rpc
+    def stop(self) -> None:
+        self._cancel_stop_timer()
 
         if self.loco_client is not None:
             try:
@@ -274,9 +289,7 @@ class G1HighLevelDdsSdk(Module, HighLevelG1Spec):
         vy = twist.linear.y
         vyaw = twist.angular.z
 
-        if self._stop_timer:
-            self._stop_timer.cancel()
-            self._stop_timer = None
+        self._cancel_stop_timer()
 
         try:
             if duration > 0:
