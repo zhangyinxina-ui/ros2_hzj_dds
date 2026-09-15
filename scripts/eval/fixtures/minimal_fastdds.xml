@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 评估夹具：最小合法 Fast-DDS profile（不用于生产）。
+     仅供 test_config.py / test_chain_isolation.py 在未来扩展时复用。 -->
+<profiles xmlns="http://www.eprosima.com">
+    <transport_descriptors>
+        <transport_descriptor>
+            <transport_id>fixture_shm</transport_id>
+            <type>SHM</type>
+            <maxMessageSize>280000</maxMessageSize>
+            <segment_size>2097152</segment_size>
+            <healthy_check_timeout_ms>10000</healthy_check_timeout_ms>
+        </transport_descriptor>
+    </transport_descriptors>
+    <participant profile_name="fixture_chain_a" is_default_profile="true">
+        <domainId>42</domainId>
+        <rtps>
+            <sendSocketBufferSize>2097152</sendSocketBufferSize>
+            <listenSocketBufferSize>2097152</listenSocketBufferSize>
+        </rtps>
+    </participant>
+</profiles>

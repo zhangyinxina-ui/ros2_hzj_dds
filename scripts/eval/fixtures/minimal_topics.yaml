@@ -1,0 +1,19 @@
+# 评估夹具：最小 topics.yaml（不用于生产）。
+discovery:
+  chain_a_ros_domain_id: 42
+  chain_b_cyclone_domain_id: 0
+
+nav_path:
+  - id: goal_pose
+    topic: /goal_pose
+    type: geometry_msgs/PoseStamped
+    qos:
+      reliability: RELIABLE
+      durability: VOLATILE
+      history: KEEP_LAST
+      depth: 5
+
+go2_ros_bridge:
+  - stream: lidar
+    topic: lidar
+    type: sensor_msgs/PointCloud2

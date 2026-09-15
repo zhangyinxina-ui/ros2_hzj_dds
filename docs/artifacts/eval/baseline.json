@@ -1,0 +1,489 @@
+{
+  "suite": "all",
+  "chain": "both",
+  "repo_root": "/Users/yixin0909zhang/Documents/ros2",
+  "summary": {
+    "total": 45,
+    "pass": 44,
+    "fail": 0,
+    "blocked": 1,
+    "exit_code": 2
+  },
+  "results": [
+    {
+      "name": "gate.prove_rmw",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/prove_rmw.py: exit 0 — - **ROS_DISTRO:** `(unset)`",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ROS_DISTRO:** `(unset)`",
+        "script": "scripts/prove_rmw.py"
+      }
+    },
+    {
+      "name": "gate.source_map",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_source_map.py: exit 0 — - **map:** `docs/architecture/ros2-source-map.md`",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **map:** `docs/architecture/ros2-source-map.md`",
+        "script": "scripts/check_source_map.py"
+      }
+    },
+    {
+      "name": "gate.bench_gates",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/print_bench_gates.py: exit 0 — - **ok file:** `docs/artifacts/bench/SCOREBOARD.md` (current-best pointer; numbers not printed)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/artifacts/bench/SCOREBOARD.md` (current-best pointer; numbers not printed)",
+        "script": "scripts/print_bench_gates.py"
+      }
+    },
+    {
+      "name": "gate.risk_matrix",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_risk_matrix.py: exit 0 — - **ok file:** `docs/architecture/feishu-risk-matrix.md` (layer checklist; no risk scores)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-risk-matrix.md` (layer checklist; no risk scores)",
+        "script": "scripts/check_risk_matrix.py"
+      }
+    },
+    {
+      "name": "gate.executor_map",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_executor_map.py: exit 0 — - **map:** `docs/architecture/feishu-executor-waitset.md`",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **map:** `docs/architecture/feishu-executor-waitset.md`",
+        "script": "scripts/check_executor_map.py"
+      }
+    },
+    {
+      "name": "gate.runtime_provenance",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_runtime_provenance.py: exit 0 — - **ok file:** `vendor/MANIFEST.md`",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `vendor/MANIFEST.md`",
+        "script": "scripts/check_runtime_provenance.py"
+      }
+    },
+    {
+      "name": "gate.unitree_cyclone_swap",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_unitree_cyclone_swap.py: exit 0 — - **ok file:** `docs/architecture/unitree-sdk2-dds-swap.md` (contiguous verdict + Hold)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/unitree-sdk2-dds-swap.md` (contiguous verdict + Hold)",
+        "script": "scripts/check_unitree_cyclone_swap.py"
+      }
+    },
+    {
+      "name": "gate.three_chain_repro",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_three_chain_repro.py: exit 0 — - **ok file:** `docs/architecture/feishu-three-chain-repro.md` (map ≠ reproduce + STATUS: blocked)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-three-chain-repro.md` (map ≠ reproduce + STATUS: blocked)",
+        "script": "scripts/check_three_chain_repro.py"
+      }
+    },
+    {
+      "name": "gate.sink_layers",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_sink_layers.py: exit 0 — - **ok file:** `docs/architecture/feishu-sink-layers.md` (layers + Hold vs allowed + no XML/SCOREBOARD rewrite)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-sink-layers.md` (layers + Hold vs allowed + no XML/SCOREBOARD rewrite)",
+        "script": "scripts/check_sink_layers.py"
+      }
+    },
+    {
+      "name": "gate.dual_chain_baseline",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_dual_chain_baseline.py: exit 0 — - **ok file:** `docs/architecture/feishu-dual-chain-baseline.md` (dual-chain contracts + Hold + pointer-only)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-dual-chain-baseline.md` (dual-chain contracts + Hold + pointer-only)",
+        "script": "scripts/check_dual_chain_baseline.py"
+      }
+    },
+    {
+      "name": "gate.dod_evidence",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_dod_evidence.py: exit 0 — - **ok file:** `docs/architecture/feishu-dod-evidence.md` (DoD: unmet + STATUS: blocked + five items)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-dod-evidence.md` (DoD: unmet + STATUS: blocked + five items)",
+        "script": "scripts/check_dod_evidence.py"
+      }
+    },
+    {
+      "name": "gate.cega_bridge_hold",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "scripts/check_cega_bridge_hold.py: exit 0 — - **ok file:** `docs/architecture/feishu-cega-bridge-hold.md` (STATUS: Hold + no Cega + no runtime edits)",
+      "details": {
+        "exit_code": 0,
+        "stdout_head": "- **ok file:** `docs/architecture/feishu-cega-bridge-hold.md` (STATUS: Hold + no Cega + no runtime edits)",
+        "script": "scripts/check_cega_bridge_hold.py"
+      }
+    },
+    {
+      "name": "gate.summary",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "闸门通过率 12/12",
+      "details": {
+        "passed": 12,
+        "total": 12
+      }
+    },
+    {
+      "name": "config.xml_wellformed",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "config/fastdds.xml: well-formed",
+      "details": {
+        "root_tag": "profiles"
+      }
+    },
+    {
+      "name": "config.domain_id",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "fastdds.xml domainId=42（期望 42）",
+      "details": {
+        "value": "42"
+      }
+    },
+    {
+      "name": "config.shm_transport_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "发现 1 个 SHM transport descriptor",
+      "details": {
+        "shm": [
+          {
+            "transport_id": "shm_midsize",
+            "maxMessageSize": "280000",
+            "segment_size": "2097152"
+          }
+        ]
+      }
+    },
+    {
+      "name": "config.socket_buffer_size",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "send=2097152 listen=2097152（>= 65536 B）",
+      "details": {
+        "send_bytes": 2097152,
+        "listen_bytes": 2097152
+      }
+    },
+    {
+      "name": "config.shm_transport_sane",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "SHM transport 参数在合理范围: {'shm_midsize': {'maxMessageSize': 280000, 'segment_size': 2097152, 'ok': True}}",
+      "details": {
+        "thresholds": {
+          "maxMessageSize_min": 65536,
+          "segment_size_min": 262144
+        }
+      }
+    },
+    {
+      "name": "config.topics_yaml_shape",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "config/topics.yaml: discovery/nav_path/域常量齐全",
+      "details": {
+        "missing": []
+      }
+    },
+    {
+      "name": "config.chain_a_RMW_IMPLEMENTATION_rmw_fastrtps_cpp",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_a.sh 含 `RMW_IMPLEMENTATION=rmw_fastrtps_cpp`",
+      "details": {
+        "file": "config/env/chain_a.sh",
+        "needle": "RMW_IMPLEMENTATION=rmw_fastrtps_cpp"
+      }
+    },
+    {
+      "name": "config.chain_a_ROS_DOMAIN_ID_42",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_a.sh 含 `ROS_DOMAIN_ID=42`",
+      "details": {
+        "file": "config/env/chain_a.sh",
+        "needle": "ROS_DOMAIN_ID=42"
+      }
+    },
+    {
+      "name": "config.chain_a_FASTRTPS_DEFAULT_PROFILES_FILE_",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_a.sh 含 `FASTRTPS_DEFAULT_PROFILES_FILE=`",
+      "details": {
+        "file": "config/env/chain_a.sh",
+        "needle": "FASTRTPS_DEFAULT_PROFILES_FILE="
+      }
+    },
+    {
+      "name": "config.chain_b_RMW_IMPLEMENTATION_rmw_cyclonedds_cpp",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_b.sh 含 `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`",
+      "details": {
+        "file": "config/env/chain_b.sh",
+        "needle": "RMW_IMPLEMENTATION=rmw_cyclonedds_cpp"
+      }
+    },
+    {
+      "name": "config.chain_b_ROS_DOMAIN_ID_0",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_b.sh 含 `ROS_DOMAIN_ID=0`",
+      "details": {
+        "file": "config/env/chain_b.sh",
+        "needle": "ROS_DOMAIN_ID=0"
+      }
+    },
+    {
+      "name": "config.chain_b_unset_CYCLONEDDS_URI",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_b.sh 含 `unset CYCLONEDDS_URI`",
+      "details": {
+        "file": "config/env/chain_b.sh",
+        "needle": "unset CYCLONEDDS_URI"
+      }
+    },
+    {
+      "name": "config.no_cross_pollution",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_a.sh 不碰 CYCLONEDDS_URI；chain_b.sh 不碰 FASTRTPS_DEFAULT_PROFILES_FILE",
+      "details": {}
+    },
+    {
+      "name": "isolation.domain_ids_distinct",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "链 A domain=42，链 B domain=0（不同）",
+      "details": {
+        "chain_a": "42",
+        "chain_b": "0"
+      }
+    },
+    {
+      "name": "isolation.rmw_distinct",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "链 A RMW=rmw_fastrtps_cpp，链 B RMW=rmw_cyclonedds_cpp",
+      "details": {
+        "chain_a": "rmw_fastrtps_cpp",
+        "chain_b": "rmw_cyclonedds_cpp"
+      }
+    },
+    {
+      "name": "isolation.fastdds_xml_only_chain_a",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "链 A FASTRTPS_DEFAULT_PROFILES_FILE=.../config/fastdds.xml；链 B 未导出",
+      "details": {
+        "chain_a_value": "\"${_ROS2_HZJ_ROOT}/config/fastdds.xml\"",
+        "chain_b_value": null
+      }
+    },
+    {
+      "name": "isolation.chain_b_unset_cyclonedds_uri",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "chain_b.sh 显式 unset CYCLONEDDS_URI",
+      "details": {}
+    },
+    {
+      "name": "isolation.xml_domain_matches_chain_a",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "fastdds.xml <domainId>=42 == chain_a.sh ROS_DOMAIN_ID=42",
+      "details": {
+        "xml_domain_id": "42",
+        "chain_a_domain_id": "42"
+      }
+    },
+    {
+      "name": "isolation.topics_no_cross_list",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "nav_path topics=['/foxglove_teleop', '/goal_pose', '/way_point', '/joy'] 与 go2_ros_bridge topics=['lidar', 'global_map', 'odom', 'color_image'] 无交集",
+      "details": {
+        "overlap": [],
+        "nav": [
+          "/foxglove_teleop",
+          "/goal_pose",
+          "/way_point",
+          "/joy"
+        ],
+        "bridge": [
+          "lidar",
+          "global_map",
+          "odom",
+          "color_image"
+        ]
+      }
+    },
+    {
+      "name": "isolation.load_py_no_top_level_env_write",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "load.py 顶层不写 os.environ",
+      "details": {}
+    },
+    {
+      "name": "api.rmw_publish_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_publish: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_ret_t rmw_publish( const rmw_publisher_t * publisher, const void * ros_message, rmw_publisher_allocation_t * allocation)"
+      }
+    },
+    {
+      "name": "api.rmw_take_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_take: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_ret_t rmw_take( const rmw_subscription_t * subscription, void * ros_message, bool * taken, rmw_subscription_allocation_t * allocation)"
+      }
+    },
+    {
+      "name": "api.rmw_wait_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_wait: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_ret_t rmw_wait( rmw_subscriptions_t * subscriptions, rmw_guard_conditions_t * guard_conditions, rmw_services_t * services, rmw_clients_t * clients, rmw_events_t * events, rmw_wait_set_t * wait_set, const rmw_time_t * wait_timeout)"
+      }
+    },
+    {
+      "name": "api.rmw_get_implementation_identifier_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_get_implementation_identifier: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED const char * rmw_get_implementation_identifier(void)"
+      }
+    },
+    {
+      "name": "api.rmw_create_publisher_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_create_publisher: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_publisher_t * rmw_create_publisher( const rmw_node_t * node, const rosidl_message_type_support_t * type_support, const char * topic_name, const rmw_qos_profile_t * qos_profile, const rmw_publisher_options_t * publisher_options)"
+      }
+    },
+    {
+      "name": "api.rmw_create_subscription_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_create_subscription: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_subscription_t * rmw_create_subscription( const rmw_node_t * node, const rosidl_message_type_support_t * type_support, const char * topic_name, const rmw_qos_profile_t * qos_policies, const rmw_subscription_options_t * subscription_options)"
+      }
+    },
+    {
+      "name": "api.rmw_create_node_present",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "rmw_create_node: 原型存在",
+      "details": {
+        "prototype": "RMW_PUBLIC RMW_WARN_UNUSED rmw_node_t * rmw_create_node( rmw_context_t * context, const char * name, const char * namespace_)"
+      }
+    },
+    {
+      "name": "api.signature_diff",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "所有 watched 函数签名与 HEAD 一致（7 个）",
+      "details": {
+        "changes": []
+      }
+    },
+    {
+      "name": "bench.ros_available",
+      "status": "blocked",
+      "score": 0.5,
+      "summary": "blocked: 未找到 ros2 CLI / rclpy（本机 macOS，按 AGENTS.md 应在 docker/ros/ 内跑）",
+      "details": {
+        "ros2_cli": null,
+        "rclpy_importable": false
+      }
+    },
+    {
+      "name": "bench.latest_raw",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "解析 2026-09-11-iter9/chain_a_same_host/raw.json：2 个 case",
+      "details": {
+        "iter_dir": "2026-09-11-iter9",
+        "raw_path": "/Users/yixin0909zhang/Documents/ros2/docs/artifacts/bench/2026-09-11-iter9/chain_a_same_host/raw.json",
+        "status": "ok",
+        "cases": [
+          {
+            "name": "ros_high_throughput",
+            "p50_us": 925.008,
+            "p95_us": 1148.2731,
+            "p99_us": 1252.59174,
+            "timeouts": 0
+          },
+          {
+            "name": "ros_reliable",
+            "p50_us": 941.239,
+            "p95_us": 1196.6892499999997,
+            "p99_us": 1312.1970800000001,
+            "timeouts": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "bench.scoreboard_pointer",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "docs/artifacts/bench/ 下 SCOREBOARD.md 与 README.md 都在",
+      "details": {
+        "missing": []
+      }
+    },
+    {
+      "name": "bench.chain_b_history",
+      "status": "pass",
+      "score": 1.0,
+      "summary": "2026-09-10/ 下有链 B 历史 same-process/same-host 记录",
+      "details": {
+        "expected_dir": "/Users/yixin0909zhang/Documents/ros2/docs/artifacts/bench/2026-09-10"
+      }
+    }
+  ]
+}
